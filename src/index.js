@@ -1,13 +1,33 @@
 
+const { IndeconService } = require('./indecon-service');
+
+const indeconService = new IndeconService();
+
+indeconService.getAu()
+    .then((res) => {
+        console.log(res);
+    })
+    .catch((err) => {
+        console.log('error inside primise!');
+        console.log(err);
+    });
+
+/*
 const express = require('express');
 const app = express();
+const http = require('http');
 
-app.get('/', (request, response) => {
-    response.send({
-        "value": "true"
-    });
+app.get('/', (req, res) => {
+    http.request({
+        host: 'www.indecon.online',
+        path: '/values/plata',
+        method: 'GET'
+    }, (res) => {
+        response.send({
+            "result": res.response.
+        });
+    });    
 });
 
-const server = app.listen(8000, () => {
-    console.log(`Ejecutando en ${host}:${port}`);
-});
+app.listen(8000);
+*/
