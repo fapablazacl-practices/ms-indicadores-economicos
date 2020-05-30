@@ -1,4 +1,4 @@
-
+/*
 const { IndeconService } = require('./indecon-service');
 
 const indeconService = new IndeconService();
@@ -11,23 +11,29 @@ indeconService.getAu()
         console.log('error inside primise!');
         console.log(err);
     });
+*/
 
-/*
 const express = require('express');
 const app = express();
-const http = require('http');
 
-app.get('/', (req, res) => {
-    http.request({
-        host: 'www.indecon.online',
-        path: '/values/plata',
-        method: 'GET'
-    }, (res) => {
-        response.send({
-            "result": res.response.
-        });
-    });    
+const port = 8000;
+const { IndicatorController } = require('./controller/indicator-controller');
+
+app.get('/indicator', (req, res) => {
+    const controller = new IndicatorController();
+
+    controller
+        .get()
+            .then( (result) => {
+                console.log(result);
+                res.send(result);
+            })
+            .catch( (err) => {
+                console.error(err);
+                res.send(err);
+            });
 });
 
-app.listen(8000);
-*/
+app.listen(port, () => {
+    console.log(`Escuchando en el puerto ${port}`);
+});
