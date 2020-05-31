@@ -1,3 +1,7 @@
+/**
+ * indicator-controller.js
+ * Controla la logica de orquestacion, composición y presentación de informacion
+ */
 
 const { IndeconService } = require('./services/indecon-service');
 

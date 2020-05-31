@@ -1,17 +1,7 @@
-/*
-const { IndeconService } = require('./indecon-service');
-
-const indeconService = new IndeconService();
-
-indeconService.getAu()
-    .then((res) => {
-        console.log(res);
-    })
-    .catch((err) => {
-        console.log('error inside primise!');
-        console.log(err);
-    });
-*/
+/**
+ * index.js
+ * Punto de entrada principal de la aplicacion
+ */
 
 const express = require('express');
 const app = express();

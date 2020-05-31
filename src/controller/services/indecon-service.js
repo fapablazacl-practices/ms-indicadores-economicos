@@ -1,4 +1,7 @@
-
+/**
+ * indecon-service.js
+ * Encapsula las llamadas REST a los endpoints de indecon
+ */
 const request = require('request-promise');
 
 class IndeconService {
