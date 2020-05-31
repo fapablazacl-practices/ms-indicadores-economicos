@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "unit-test": "./node_modules/mocha/bin/mocha src/controller/*.spec.js"
   },
   "keywords": [],
   "author": "",
