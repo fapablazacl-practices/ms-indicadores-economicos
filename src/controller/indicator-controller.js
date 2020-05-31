@@ -12,7 +12,14 @@ class IndicatorController {
         this._indicators = IndeconService.getAvailableIndicators();
     }
 
-    async get(indicator) {
+    async getStats(indicator) {
+        const priceHistory = await this._get(indicator);
+        const dateFrom = this._computeFromDate();
+
+        return this._computeStats(priceHistory, dateFrom);
+    }
+
+    async _get(indicator) {
         if (this._indicators.indexOf(indicator) === -1) {
             console.error("Error de validacion");
             throw new Error(`Supplied indicator ${indicator} isn't supported`);
@@ -20,13 +27,6 @@ class IndicatorController {
 
         const result = await this.indeconService.getIndicatorHistory(indicator);
         return this._createPriceHistory(result.values);
-    }
-
-    async getStats(indicator) {
-        const priceHistory = await this.get(indicator);
-        const dateFrom = this._computeFromDate();
-
-        return this._computeStats(priceHistory, dateFrom);
     }
 
     _computeFromDate() {
