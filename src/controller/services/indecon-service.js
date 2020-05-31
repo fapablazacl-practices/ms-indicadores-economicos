@@ -15,17 +15,12 @@ const INDECON_INDICATOR_UF = 'uf';
 class IndeconService {
     constructor() {
         this._url = 'https://www.indecon.online';
-        this._indicators = IndeconService.getAvailableIndicators();
     }
 
     /**
      * Consulta la informacion de precios asociado a un indicador en particular
      */
     async getIndicatorHistory(indicator) {
-        if (this._indicators.indexOf(indicator) === -1) {
-            throw new Error(`Supplied indicator ${indicator} isn't supported`);
-        }
-
         return this._createRequest(`/values/${indicator}`);
     }
 

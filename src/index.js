@@ -9,21 +9,34 @@ const app = express();
 const port = 8000;
 const { IndicatorController } = require('./controller/indicator-controller');
 
-app.get('/indicator', (req, res) => {
+app.get('/stats/:id', (req, res) => {
     const controller = new IndicatorController();
 
     controller
-        .get()
+        .getStats(req.params.id)
             .then( (result) => {
-                console.log(result);
-                res.send(result);
+                const body = {
+                    code: 'success',
+                    payload: result
+                };
+
+                res.send(body);
             })
             .catch( (err) => {
-                console.error(err);
-                res.send(err);
+                console.log(err);
+
+                const body = {
+                    code: 'error', 
+                    payload: {
+                        reason: err
+                    }
+                }
+
+                res.send(body);
             });
 });
 
 app.listen(port, () => {
     console.log(`Escuchando en el puerto ${port}`);
+    console.log('Errores se desplegaran por el terminal ...');
 });

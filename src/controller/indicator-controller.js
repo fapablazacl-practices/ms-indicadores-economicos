@@ -3,36 +3,69 @@
  * Controla la logica de orquestacion, composición y presentación de informacion
  */
 
-const { 
-    IndeconService,
-    INDECON_INDICATOR_GOLD,
-    INDECON_INDICATOR_SILVER,
-    INDECON_INDICATOR_COPPER,
-    INDECON_INDICATOR_DOLLAR,
-    INDECON_INDICATOR_EURO,
-    INDECON_INDICATOR_UF
-} = require('./services/indecon-service');
+const { IndeconService } = require('./services/indecon-service');
 
 
 class IndicatorController {
     constructor() {
         this.indeconService = new IndeconService();
+        this._indicators = IndeconService.getAvailableIndicators();
     }
 
-    
-    async get(input) {
-        const response = await this.indeconService.getIndicatorHistory(INDECON_INDICATOR_GOLD);
-        return this._formatDatePricePairs(response.values);
+    async get(indicator) {
+        if (this._indicators.indexOf(indicator) === -1) {
+            console.error("Error de validacion");
+            throw new Error(`Supplied indicator ${indicator} isn't supported`);
+        }
+
+        const result = await this.indeconService.getIndicatorHistory(indicator);
+        return this._createPriceHistory(result.values);
     }
 
+    async getStats(indicator) {
+        const priceHistory = await this.get(indicator);
+        const dateFrom = this._computeFromDate();
 
-    _formatDatePricePairs(values) {
+        return this._computeStats(priceHistory, dateFrom);
+    }
+
+    _computeFromDate() {
+        const MONTHS_PAST = 10;
+        const currentDate = new Date();
+
+        return new Date(currentDate.setMonth(currentDate.getMonth() - MONTHS_PAST));
+    }
+
+    _createPriceHistory(values) {
         return Object.keys(values).map((key) => {
             return {
-                'date': new Date(parseInt(key) * 1000),
-                'price': `${values[key]} US$`
+                date: new Date(parseInt(key) * 1000),
+                price: values[key]
             };
         });
+    }
+
+    _computeStats(priceHistory, dateFrom) {
+        let min = Number.MAX_VALUE;
+        let max = Number.MIN_VALUE;
+        let average  = 0.0;
+        let total = 0;
+    
+        priceHistory
+            .filter( value => (value.date >= dateFrom))
+            .forEach( (value) => {
+                const price = value.price;
+
+                min = Math.min(min, price);
+                max = Math.max(max, price);
+                average += price;
+
+                total ++;
+            });
+    
+        average /= total;
+
+        return { min, max, average };
     }
 }
 
