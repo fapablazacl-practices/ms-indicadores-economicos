@@ -15,11 +15,11 @@ $ npm install
 ## Ejecución
 Para levantar el microservicio en sistemas Unix-Like (Linux, macOS), se deben ejecutar los siguientes comandos:
 
-$ npm start
+`$ npm start`
 
 En caso de que el microservicio se haya ejecutado correctamente, se mostrará por consola un mensaje similar al siguiente:
 
-"Escuchando en el puerto 8000"
+`Escuchando en el puerto 8000`
 
 
 ## Ejecucion de pruebas unitarias
