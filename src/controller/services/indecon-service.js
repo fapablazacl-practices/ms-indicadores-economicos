@@ -4,29 +4,29 @@
  */
 const request = require('request-promise');
 
+const INDECON_INDICATOR_GOLD = 'oro';
+const INDECON_INDICATOR_SILVER = 'plata';
+const INDECON_INDICATOR_COPPER = 'cobre';
+const INDECON_INDICATOR_DOLLAR = 'dolar';
+const INDECON_INDICATOR_EURO = 'euro';
+const INDECON_INDICATOR_UF = 'uf';
+
+
 class IndeconService {
     constructor() {
         this._url = 'https://www.indecon.online';
+        this._indicators = IndeconService.getAvailableIndicators();
     }
 
-    async getAu() {
-        try {
-            const response = await this._createRequest('/values/plata');
-
-            return this._formatDatePricePairs(response.values);
-        } catch (err) {
-            return err;
+    /**
+     * Consulta la informacion de precios asociado a un indicador en particular
+     */
+    async getIndicatorHistory(indicator) {
+        if (this._indicators.indexOf(indicator) === -1) {
+            throw new Error(`Supplied indicator ${indicator} isn't supported`);
         }
-    }
 
-    async getCu() {
-        try {
-            const response = await this._createRequest('/values/cobre');
-
-            return this._formatDatePricePairs(response.values);
-        } catch (err) {
-            return err;
-        }
+        return this._createRequest(`/values/${indicator}`);
     }
 
     async _createRequest(operation) {
@@ -37,16 +37,24 @@ class IndeconService {
         });
     }
 
-    _formatDatePricePairs(values) {
-        return Object.keys(values).map((key) => {
-            return {
-                'date': new Date(parseInt(key) * 1000),
-                'price': `${values[key]} US$`
-            };
-        });
+    static getAvailableIndicators() {
+        return [
+            INDECON_INDICATOR_GOLD,
+            INDECON_INDICATOR_SILVER,
+            INDECON_INDICATOR_COPPER,
+            INDECON_INDICATOR_DOLLAR,
+            INDECON_INDICATOR_EURO,
+            INDECON_INDICATOR_UF
+        ];
     }
 }
 
 module.exports = {
-    IndeconService
+    IndeconService,
+    INDECON_INDICATOR_GOLD,
+    INDECON_INDICATOR_SILVER,
+    INDECON_INDICATOR_COPPER,
+    INDECON_INDICATOR_DOLLAR,
+    INDECON_INDICATOR_EURO,
+    INDECON_INDICATOR_UF
 };
