@@ -23,15 +23,16 @@ app.get('/stats/:id', (req, res) => {
                 res.send(body);
             })
             .catch( (err) => {
-                console.log(err);
+                console.error(err);
 
                 const body = {
                     code: 'error', 
                     payload: {
-                        reason: err
+                        reason: err.message
                     }
                 }
 
+                res.status(400);
                 res.send(body);
             });
 });

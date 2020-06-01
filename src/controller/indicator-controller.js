@@ -21,8 +21,7 @@ class IndicatorController {
 
     async _get(indicator) {
         if (this._indicators.indexOf(indicator) === -1) {
-            console.error("Error de validacion");
-            throw new Error(`Supplied indicator ${indicator} isn't supported`);
+            throw new Error(`Supplied indicator "${indicator}" isn't supported`);
         }
 
         const result = await this.indeconService.getIndicatorHistory(indicator);
