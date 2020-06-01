@@ -1,7 +1,7 @@
 # ms-indicadores-economicos
 El microservicio 'ms-indicadores-economicos' calcula un resumen de estadisticas basicas asociadas a un determinado indicador económico.
 
-## Requerimientos:
+## Versiones usadas de Node y NPM en el desarrollo:
 * NodeJS v14.2.0
 * npm 6.14.4
 
@@ -42,7 +42,7 @@ En caso de que el microservicio se haya iniciado correctamente, se mostrará lo 
     Errores se desplegaran por el terminal ...
 
 
-## Ejecucion de pruebas unitarias
+## Ejecución de Pruebas Unitarias
 Se encuentra desarrollada una prueba unitaria de la lógica que calcula el mínimo, el máximo y el promedio de un indicador económico. Para ejecutarla, se debe invocar a la tarea 'unit-test':
 
     $ npm run unit-test
