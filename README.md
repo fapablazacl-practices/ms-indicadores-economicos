@@ -1,6 +1,39 @@
 # ms-indicadores-economicos
 El microservicio 'ms-indicadores-economicos' calcula un resumen de estadisticas basicas asociadas a un determinado indicador económico.
 
+Éste, expone el endpoint GET /stats/:key, el cual internamente hace consulta al servicio de indecon, consolida la información de precio, y la resume en el mínimo y máximo, además de calcular el promedio. Por defecto, utiliza el puerto 8000 para recibir conexiones.
+
+El valor 'key' puede ser uno de los siguientes:
+
+* oro
+* plata
+* cobre
+* dolar
+* euro
+* uf
+
+Por ejemplo, la llamada GET a `localhost:8000/stats/oro` entregará la siguiente respuesta en JSON:
+
+    {
+        "code": "success",
+        "payload": {
+            "min": 1439.06,
+            "max": 1674.59,
+            "average": 1523.433076923076
+        }
+    }
+
+
+Cualquier otro verbo HTTP, o endpoint distinto, será una condición de error, y por tanto, el microservicio entregará la siguiente respuesta:
+
+    {
+        "code": "error",
+        "payload": {
+            "reason": "Supplied indicator \"oroasd\" isn't supported"
+        }
+    }
+
+
 ## Versiones usadas de Node y NPM en el desarrollo:
 * NodeJS v14.2.0
 * npm 6.14.4
@@ -25,23 +58,6 @@ Una vez finalizado el proceso, debería aparecer un mensaje similar al siguiente
 
     found 0 vulnerabilities
 
-
-## Inicialización
-Para inicializar el microservicio, haciendo que éste esté preparado para recibir peticiones HTTP, se debe ejecutar el subcomando 'start' de npm:
-
-    $ npm start
-
-En caso de que el microservicio se haya iniciado correctamente, se mostrará lo siguiente:
-
-    ➜  ms-indicadores-economicos git:(master) ✗ npm start 
-
-    > ms-indicadores-economicos@1.0.0 start /home/fapablaza/Desktop/bice/test-fullstack/ms-indicadores-economicos
-    > node src/index.js
-
-    Escuchando en el puerto 8000
-    Errores se desplegaran por el terminal ...
-
-
 ## Ejecución de Pruebas Unitarias
 Se encuentra desarrollada una prueba unitaria de la lógica que calcula el mínimo, el máximo y el promedio de un indicador económico. Para ejecutarla, se debe invocar a la tarea 'unit-test':
 
@@ -57,3 +73,18 @@ Se encuentra desarrollada una prueba unitaria de la lógica que calcula el míni
 
     2 passing (11ms)
 
+
+## Inicialización
+Para inicializar el microservicio, y hacer esté preparado para recibir peticiones HTTP, se debe ejecutar el subcomando 'start' de npm:
+
+    $ npm start
+
+En caso de que el microservicio se haya iniciado correctamente, se mostrará lo siguiente:
+
+    ➜  ms-indicadores-economicos git:(master) ✗ npm start 
+
+    > ms-indicadores-economicos@1.0.0 start /home/fapablaza/Desktop/bice/test-fullstack/ms-indicadores-economicos
+    > node src/index.js
+
+    Escuchando en el puerto 8000
+    Errores se desplegaran por el terminal ...
