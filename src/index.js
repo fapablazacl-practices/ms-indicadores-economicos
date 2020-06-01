@@ -5,9 +5,12 @@
 
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 const port = 8000;
 const { IndicatorController } = require('./controller/indicator-controller');
+
+app.use(cors({origin: 'http://localhost:4200'}));
 
 app.get('/stats/:id', (req, res) => {
     const controller = new IndicatorController();
